@@ -49,9 +49,9 @@ def dealRawCrawData(codeName, CodeHref, type, date):
 
 def typeSelect(type):
     typeList = {
-        "list_foreign": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_D.djhtm",
-        "list_local": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm",
-        "list_employed": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DB.djhtm",
+        "listed_foreign": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_D.djhtm",
+        "listed_local": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm",
+        "listed_employed": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DB.djhtm",
         "otc_foreign": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=D&B=1&C=1",
         "otc_local": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DD&B=1&C=1",
         "otc_employed": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DB&B=1&C=1",
