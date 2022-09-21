@@ -1,19 +1,17 @@
 # 股票系列-主要爬蟲程式
-import sys
-sys.path.append('/Users/guantingliu/Desktop/BackEnd/fin_tracker_py/modules/Stock')
-import twstock
-from crypt import methods
-from flask import jsonify, Blueprint, request
+from ..Stock.db import postInvestorsDB
+from ..Stock.getInvestorsRawData import getInvestorsRawData
+from ..Stock.stockDetail import CodeInfo
 from flask_cors import CORS
-from stockDetail import CodeInfo
-from getInvestorsRawData import getInvestorsRawData
-from db import postInvestorsDB
-
+from flask import jsonify, Blueprint, request
+from crypt import methods
+import twstock
 
 # 對blueprint 做CORS處理
 stock_blueprints = Blueprint('stockFetch', __name__)
 CORS(stock_blueprints, resources={
     r"/.*": {"origins": ["http://localhost:3000"]}})
+
 
 # api homepage -> 連線連到stock是否ok
 @stock_blueprints.route('/', methods=['GET'])
@@ -21,6 +19,8 @@ def api():
     return jsonify({"message": "Stock OK"})
 
 # 打twstock API，取得股價資料
+
+
 @stock_blueprints.route('/eachInfo', methods=['POST'])
 def crawInvestor():
     newCodeClass = CodeInfo('2330')
@@ -39,7 +39,9 @@ def crawInvestor():
 
 # 爬取法人買賣超資料 & 把他打給資料庫
 # type：包含listed_foreign：上市外資買賣超一日。
-@stock_blueprints.route('/investors/<type>', methods=['GET'])
+
+
+@stock_blueprints.route('/investors/<type>', methods=['POST'])
 def api3(type):
     buySellList = getInvestorsRawData(type)
     postInvestorsDB(buySellList, type)
