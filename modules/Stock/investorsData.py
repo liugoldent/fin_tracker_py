@@ -68,4 +68,14 @@ def postDataToInvestorsDB():
 
 # 得到法人買賣超資料
 def getInvestorsData(type):
-    return getStockInvestorCollection(type)
+    resultList = []
+    apiResult = getStockInvestorCollection(type)
+    for doc in apiResult:
+        resultList.append({
+            'no': doc['no'],
+            'code': doc['code'],
+            'name': doc['name'],
+            'type': doc['type'],
+            'date': doc['date']
+        })
+    return resultList

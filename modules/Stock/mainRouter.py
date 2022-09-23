@@ -47,14 +47,4 @@ def api3():
 # 獲得各別買賣超資料
 @stock_blueprints.route('/investors/<type>', methods=['GET'])
 def api4(type):
-    returnResult = []
-    apiResult = getInvestorsData(type)
-    for doc in apiResult:
-        returnResult.append({
-            'no': doc['no'],
-            'code': doc['code'],
-            'name': doc['name'],
-            'type': doc['type'],
-            'date': doc['date']
-        })
-    return returnResult
+    return getInvestorsData(type)
