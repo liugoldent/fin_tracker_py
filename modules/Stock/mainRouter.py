@@ -1,7 +1,6 @@
 # 股票系列-主要爬蟲程式
-from ..Stock.db import postInvestorsDB
-from ..Stock.getInvestorsRawData import getInvestorsRawData
-from ..Stock.stockDetail import CodeInfo
+from .investorsData import postDataToInvestorsDB, getInvestorsData
+from .stockDetail import CodeInfo
 from flask_cors import CORS
 from flask import jsonify, Blueprint, request
 from crypt import methods
@@ -15,14 +14,14 @@ CORS(stock_blueprints, resources={
 
 # api homepage -> 連線連到stock是否ok
 @stock_blueprints.route('/', methods=['GET'])
-def api():
+def api1():
     return jsonify({"message": "Stock OK"})
 
 # 打twstock API，取得股價資料
 
 
 @stock_blueprints.route('/eachInfo', methods=['POST'])
-def crawInvestor():
+def api2():
     newCodeClass = CodeInfo('2330')
     pastPrice = newCodeClass.baseInfo()
     # tpexValue = twstock.tpex
@@ -37,12 +36,25 @@ def crawInvestor():
     # return in JSON format. (For API)
     return jsonify({"message": pastPrice})
 
+
 # 爬取法人買賣超資料 & 把他打給資料庫
 # type：包含listed_foreign：上市外資買賣超一日。
+@stock_blueprints.route('/investors/all', methods=['POST'])
+def api3():
+    postDataToInvestorsDB()
+    return "OK"
 
-
-@stock_blueprints.route('/investors/<type>', methods=['POST'])
-def api3(type):
-    buySellList = getInvestorsRawData(type)
-    postInvestorsDB(buySellList, type)
-    return buySellList
+# 獲得各別買賣超資料
+@stock_blueprints.route('/investors/<type>', methods=['GET'])
+def api4(type):
+    returnResult = []
+    apiResult = getInvestorsData(type)
+    for doc in apiResult:
+        returnResult.append({
+            'no': doc['no'],
+            'code': doc['code'],
+            'name': doc['name'],
+            'type': doc['type'],
+            'date': doc['date']
+        })
+    return returnResult

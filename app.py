@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 from modules.ptt.pttMainCrawler import ptt_blueprints
-from modules.Stock.stockMainCrawler import stock_blueprints
+from modules.Stock.mainRouter import stock_blueprints
 app = Flask(__name__)
 
 

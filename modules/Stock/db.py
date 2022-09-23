@@ -11,7 +11,7 @@ user_pwd = os.environ['MONGO_PWD']
 cluster = f"mongodb+srv://{user_name}:{user_pwd}@cluster0.67gy5wa.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(cluster, tlsCAFile=certifi.where())
 
-# 寫入db for stock -> collection = 買賣超系列
+# 寫入db stock 各個買賣超 collection資料
 
 
 def postInvestorsDB(buyAndSellList, collectionType):
@@ -21,3 +21,10 @@ def postInvestorsDB(buyAndSellList, collectionType):
     buyList = json.loads(json_util.dumps(buyAndSellList['buyList']))
     db[collectionType].insert_many(sellList)
     db[collectionType].insert_many(buyList)
+
+# 從db stock取出各自的買賣超資料
+
+
+def getStockInvestorCollection(collectionType):
+    db = client['stock']
+    return db[collectionType].find({})

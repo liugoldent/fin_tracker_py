@@ -1,12 +1,20 @@
 # 爬取三大法人買賣超資料
 import json
 from public.fakeUserAgentGenerate import userAgentRoute
+from .db import postInvestorsDB, getStockInvestorCollection
 from lxml import html, etree
 import requests
 
+urlList = {
+    "listed_foreign": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_D.djhtm",
+    "listed_local": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm",
+    "listed_employed": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DB.djhtm",
+    "otc_foreign": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=D&B=1&C=1",
+    "otc_local": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DD&B=1&C=1",
+    "otc_employed": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DB&B=1&C=1",
+}
+
 # 爬蟲：三大法人買賣超資料，爬完的純資料
-
-
 def getInvestorsRawData(type):
     response = requests.get(typeSelect(type), headers={
                             'User-Agent': userAgentRoute()})
@@ -48,12 +56,16 @@ def dealRawCrawData(codeName, CodeHref, type, date):
 
 
 def typeSelect(type):
-    typeList = {
-        "listed_foreign": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_D.djhtm",
-        "listed_local": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm",
-        "listed_employed": "https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DB.djhtm",
-        "otc_foreign": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=D&B=1&C=1",
-        "otc_local": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DD&B=1&C=1",
-        "otc_employed": "https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DB&B=1&C=1",
-    }
-    return typeList[type]
+    return urlList[type]
+
+# post更新stock-DB資料（一次更新全部）
+
+
+def postDataToInvestorsDB():
+    for item in urlList.keys():
+        postInvestorsDB(getInvestorsRawData(item), item)
+    return 'OK'
+
+# 得到法人買賣超資料
+def getInvestorsData(type):
+    return getStockInvestorCollection(type)
