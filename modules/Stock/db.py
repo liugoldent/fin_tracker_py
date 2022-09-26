@@ -8,14 +8,16 @@ import os
 # connect Db
 user_name = os.environ['MONGO_USER']
 user_pwd = os.environ['MONGO_PWD']
-cluster = f"mongodb+srv://{user_name}:{user_pwd}@cluster0.67gy5wa.mongodb.net/?retryWrites=true&w=majority"
+print(user_name)
+print(user_pwd)
+cluster = f"mongodb+srv://{user_name}:{user_pwd}@cluster0.lzg4zlq.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(cluster, tlsCAFile=certifi.where())
 
 # 寫入db stock 各個買賣超 collection資料
 
 
 def postInvestorsDB(buyAndSellList, collectionType):
-    db = client['stock']
+    db = client['investor']
     db[collectionType].delete_many({})
     sellList = json.loads(json_util.dumps(buyAndSellList['sellList']))
     buyList = json.loads(json_util.dumps(buyAndSellList['buyList']))
@@ -26,5 +28,12 @@ def postInvestorsDB(buyAndSellList, collectionType):
 
 
 def getStockInvestorCollection(collectionType):
-    db = client['stock']
+    db = client['investor']
     return db[collectionType].find({})
+
+
+# 要修改DB記得先輸入此資訊
+# del os.environ['MONGO_USER']
+# del os.environ['MONGO_PWD']
+# os.environ['MONGO_USER'] = 'fintrackerowner' 
+# os.environ['MONGO_PWD'] = 'MEyAVn830L7GuiMo'
