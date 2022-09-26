@@ -1,7 +1,7 @@
 # 股票系列-主要爬蟲程式
 from .investorsData import postDataToInvestorsDB, getInvestorsData
 from .stockDetail import CodeInfo
-from .stocksList import getListRawData
+from .stocksList import getListRawData, writeToJSONFile
 from flask_cors import CORS
 from flask import jsonify, Blueprint, request
 from crypt import methods
@@ -69,3 +69,12 @@ def api5():
         return getListRawData()
     except:
         print('[POST]/twStockList')
+
+# 寫入json資料
+@stock_blueprints.route('/classStockInfo', methods=['GET'])
+def api6():
+    try:
+        writeToJSONFile()
+        return 'OK'
+    except:
+        return '[POST]/classStockInfo Error'

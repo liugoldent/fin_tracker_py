@@ -15,4 +15,14 @@ def getListRawData(type):
                             'User-Agent': userAgentRoute()})
     htmlTree = etree.HTML(response.text)
     stockName = htmlTree.xpath('/html/body/table[2]/tr[3]/td[1]')
-    
+
+# 寫進json檔案
+def writeToJSONFile():
+    dictionary = {
+        "name": "sathiyajith",
+        "rollno": 56,
+        "cgpa": 8.6,
+        "phonenumber": "9976770500"
+    }
+    with open("sample.json", "w", encoding='utf-8') as outfile:
+        json.dumps(dictionary, outfile, ensure_ascii=False, indent=4)
